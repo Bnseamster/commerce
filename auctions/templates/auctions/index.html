@@ -1,0 +1,25 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+{% for listing in listings %}
+<div class="card mb-3" style="max-width: 540px;">
+    <div class="row no-gutters">
+      <div class="col-md-4">
+        <img src="{{ listing.picture }}" class="card-img" alt="no image available">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title"><a href="{% url 'show listing' listing.id %}">{{ listing }}</a></h5>
+          
+          <p class="card-text"><small class="text-muted">Date Created: {{ listing.start_date }}</small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<br>
+{% empty %}
+<h1>No active listings.</h1>
+{% endfor %}
+{% endblock %}

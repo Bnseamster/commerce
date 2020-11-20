@@ -1,0 +1,79 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div class="jumbotron">
+    <h1 class="display-4">{{ listing }}</h1>
+    <img id="listing-picture" src='{{ listing.picture }}'>
+    <p class="lead">Date Created: {{ listing.date_posted }} </p>
+    <ul class="list-group list-group-horizontal-sm">
+        <li class="list-group-item">Listing Created By: {{ listing.createdBy }}</li>
+        <li class="list-group-item">Category: {{ listing.category }}</li>
+        <li class="list-group-item">Total Number of Bids: {{ bidCount.bid__count }}</li>
+        {% if showClose %}
+        <li class="list-group-item">Days Till End: {{daysTillEnd}}</li>
+        {% endif %}
+    </ul>
+    {% if user.is_authenticated %}
+    <div id='add-to-watchlist-button'>
+      <a href= "{% url 'add to watchlist' listing.id %}">
+        <style type="text/css"> 
+        </style>
+        <button type="button" class="btn btn-primary btn-circle btn-sm">+</button>
+        add to watchlist
+      </a>
+    </div>
+    {% endif %}
+    {% if close %}
+    <h3>Auction Closed</h3>
+      {% if currentUser == topBidder %}
+      <h1>Winner is: {{ topBidder }}!(You)</h1>
+      {% endif %}
+    
+    
+    <hr class="my-4">
+    {% else %}
+      {% if showClose %}
+      <form name="close" action="{% url 'show listing' listing.id %}" method='POST'>
+        {% csrf_token %}
+        <button name= 'close' value="close" type="submit" class="btn btn-danger">CLOSE LISTING</button>  
+      </form>
+      {% endif %}
+    {% endif %}
+    <h2>Current Bid: {{ bids.bid__max }}</h2>
+    <h3>Description:</h3>
+    <p>{{ listing.description }}</p>
+    <p class="lead">
+    
+
+    {% if user.is_authenticated %}
+    {% if close == False %}
+    <form name=Bid action="{% url 'show listing' listing.id %}" method='POST'>
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="newBid">Make a Bid</label>
+        <input type="number" class="form-control" name="newBid" aria-describedby="newBid" placeholder="Enter your bid.">
+      </div>
+      <button name= 'button' value="bid" type="submit" class="btn btn-primary">Make A Bid</button>
+    </form>
+    </p>
+    {% endif %}
+
+    <form name=Comment action="{% url 'show listing' listing.id %}" method='POST'>
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="commentArea">Add New Comment:</label>
+        <textarea class="form-control" name="newComment" id="commentArea" rows="3"></textarea>
+      </div>
+      <button name= 'button' value="comment" type="submit" class="btn btn-primary">Comment!</button>
+    </form>
+    {% endif %}
+</div>
+<ul name='comment section'class="list-group">
+  <h3>Comment Section:</h3>
+  {% for comment in comments %}
+  <li class="list-group-item">{{ comment }}</li>
+  {% empty %}
+  <li class="list-group-item">No Comments So Far.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

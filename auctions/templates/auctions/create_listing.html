@@ -1,0 +1,54 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<form action="{% url 'create listing' %}" method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="listingName">Listing Name</label>
+      <input type="Text" name="listingName" class="form-control" id="listingName" placeholder="i.e. 'Brand New Phone'">
+    </div>
+    <div class="form-group">
+      <label for="listingPic">Url for Picture</label>
+      <input type="Text" name="listingPic" class="form-control" id="listingPic" placeholder="www.url.com/image.jpg">
+    </div>
+    <div class="d-flex form-group row">
+        <label for="example-date-input" class="col-2 col-form-label">Auction Start Date:</label>
+        <div class="col-4 mr-auto">
+          <input class="form-control" type="date" value="2020-08-19" name="start-date">
+        </div>
+        <label for="example-date-input" class="col-2 col-form-label">Auction End Date:</label>
+        <div class="col-4 mr-auto">
+          <input class="form-control" type="date" value="2020-08-19" name="end-date">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Amount">Starting Bid Price</label>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
+        </div>
+        <input type="int" name="startingBid" class="form-control" aria-label="Amount">
+        <div class="input-group-append">
+            <span class="input-group-text">.00</span>
+        </div>
+    </div>
+    <div class="form-group">
+      <label for="category">Category</label>
+      <select name="category" class="form-control" id="exampleFormControlSelect1">
+        <option>Electronics</option>
+        <option>Clothing</option>
+        <option>Food</option>
+        <option>Sports</option>
+        <option>Home</option>
+        <option>Books</option>
+        <option>Musical Instruments</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea name="description" class="form-control" id="description" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Listing</button>
+  </form>
+
+  {% endblock %}
